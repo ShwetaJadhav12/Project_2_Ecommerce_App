@@ -36,6 +36,7 @@ fun LoginScreen(
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
 
+    var isLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     Column(
@@ -123,8 +124,9 @@ fun LoginScreen(
                     authViewModel.Login(email, password) { success, message ->
                         if (success) {
                             Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show()
-                            // navigate to home or main screen
-                            navController.navigate("signup")
+                            navController.navigate("home"){
+                                popUpTo("auth"){inclusive = true}
+                            }
                         } else {
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
@@ -140,7 +142,7 @@ fun LoginScreen(
                 contentColor = Color.White
             )
         ) {
-            Text(text = "Login", fontSize = 18.sp)
+            Text(text = if( isLoading) "Loading..." else "Login", fontSize = 18.sp)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
