@@ -39,6 +39,7 @@ fun SignupScreen(
     var nameError by remember { mutableStateOf<String?>(null) }
     var emailError by remember { mutableStateOf<String?>(null) }
     var passwordError by remember { mutableStateOf<String?>(null) }
+    var isLoading by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -135,7 +136,6 @@ fun SignupScreen(
 
         Button(
             onClick = {
-                // Validation
                 val valid = validateInputs(
                     name = name,
                     email = email,
@@ -144,21 +144,24 @@ fun SignupScreen(
                     onEmailError = { emailError = it },
                     onPasswordError = { passwordError = it }
                 )
-
                 if (valid) {
                     authViewModel.Signup(email, name, password) { success, message ->
                         if (success) {
-                            navController.navigate("home"){
+                            isLoading = true
+                            navController.navigate("home") {
                                 popUpTo("auth") { inclusive = true }
 
 
                             }
                         } else {
+                            isLoading = false
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
+
             },
+            enabled = !isLoading,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),

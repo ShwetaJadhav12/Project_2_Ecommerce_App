@@ -9,16 +9,20 @@ import com.example.project_2_ecommerce_app.screen.AuthScreen
 import com.example.project_2_ecommerce_app.screen.HomeScreen
 import com.example.project_2_ecommerce_app.screen.LoginScreen
 import com.example.project_2_ecommerce_app.screen.SignupScreen
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
+    val isLoggedIn = Firebase.auth.currentUser!= null
+    val firstPage = if(isLoggedIn) "home" else "auth"
     NavHost(
         navController = navController,
         modifier = modifier,
-        startDestination = "auth"
+        startDestination = firstPage
     ){
         composable("auth"){
             AuthScreen(navController)
@@ -30,7 +34,7 @@ fun AppNavigation(
             SignupScreen(navController)
         }
         composable("home"){
-            HomeScreen()
+            HomeScreen(navController)
         }
 
     }

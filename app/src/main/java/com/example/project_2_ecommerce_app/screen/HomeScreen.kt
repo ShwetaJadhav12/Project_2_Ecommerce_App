@@ -34,7 +34,7 @@ fun HomeScreen(navController: NavController) {
     var selectedIndex by remember { mutableStateOf(0) }
 
     Scaffold(
-        containerColor = Color(0xFFA2A2A2),
+        containerColor = Color(0xFFE5E2E2),
         bottomBar = {
             NavigationBar(
                 containerColor = Color.White,

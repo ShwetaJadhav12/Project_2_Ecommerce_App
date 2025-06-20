@@ -9,7 +9,16 @@ import com.google.firebase.firestore.firestore
 class AuthViewModel : ViewModel() {
     private  val auth = Firebase.auth
     private val firestore = Firebase.firestore
-    fun Login(email: String, password: String, param: (Boolean, String) -> Unit) {
+    fun Login(email: String, password: String, onResult: (Boolean, String) -> Unit) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    onResult(true, null.toString())
+                } else {
+                    onResult(false, it.exception?.localizedMessage ?: "Unknown Error")
+                }
+            }
+
 
     }
     fun Signup(email : String , name: String, password: String, onResult: (Boolean,String) -> Unit){
