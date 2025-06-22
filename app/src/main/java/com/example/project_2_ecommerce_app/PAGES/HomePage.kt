@@ -6,9 +6,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.project_2_ecommerce_app.composable.BannerView
-import com.example.project_2_ecommerce_app.composable.HeaderView
+import androidx.compose.ui.unit.sp
+import com.example.project_2_ecommerce_app.components.BannerView
+import com.example.project_2_ecommerce_app.components.CategoryView
+import com.example.project_2_ecommerce_app.components.HeaderView
 
 
 @Composable
@@ -23,6 +31,17 @@ fun HomePage(modifier: Modifier = Modifier){
     ) {
         HeaderView()
         BannerView()
+        Text(text ="Categories", style = TextStyle(
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            textAlign = TextAlign.Start,
+            fontFamily = FontFamily.SansSerif,
+            letterSpacing = 0.15.sp,
+            lineHeight = 24.sp,
+            fontStyle = FontStyle.Normal
+        ))
+        CategoryView()
 
 
     }

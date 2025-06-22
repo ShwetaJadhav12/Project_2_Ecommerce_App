@@ -1,4 +1,4 @@
-package com.example.project_2_ecommerce_app.composable
+package com.example.project_2_ecommerce_app.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
