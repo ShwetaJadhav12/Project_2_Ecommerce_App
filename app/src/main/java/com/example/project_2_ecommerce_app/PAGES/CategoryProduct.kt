@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.project_2_ecommerce_app.components.ProductItemView
+import com.example.project_2_ecommerce_app.globNavigation.navController
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -57,7 +58,9 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
         items(productList) { product ->
             ProductItemView(
                 modifier = Modifier.fillMaxWidth(),
-                product = product
+                product = product,
+                onClick = { navController.navigate("productDetail/${product.id}") },
+                onAddToCartClick = { /* Handle add to cart click */ }
             )
         }
     }

@@ -26,13 +26,15 @@ import com.example.project_2_ecommerce_app.model.OwnProducts
 fun ProductItemView(
     modifier: Modifier = Modifier,
     product: OwnProducts,
-    onAddToCartClick: () -> Unit = {}
+    onClick: () -> Unit,
+    onAddToCartClick: () -> Unit
 ) {
     Card(
         modifier = modifier
             .padding(6.dp)
             .fillMaxWidth()
             .height(320.dp).clickable {
+                onClick()
 
             },
         shape = RoundedCornerShape(12.dp),
