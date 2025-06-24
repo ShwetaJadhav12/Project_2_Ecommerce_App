@@ -60,7 +60,6 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
                 modifier = Modifier.fillMaxWidth(),
                 product = product,
                 onClick = { navController.navigate("productDetail/${product.id}") },
-                onAddToCartClick = { /* Handle add to cart click */ }
             )
         }
     }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.project_2_ecommerce_app.AddItemToCart
 import com.example.project_2_ecommerce_app.model.OwnProducts
 
 @Composable
@@ -27,8 +29,8 @@ fun ProductItemView(
     modifier: Modifier = Modifier,
     product: OwnProducts,
     onClick: () -> Unit,
-    onAddToCartClick: () -> Unit
 ) {
+    val context = LocalContext.current
     Card(
         modifier = modifier
             .padding(6.dp)
@@ -117,7 +119,12 @@ fun ProductItemView(
 
             // Add to Cart Button (real feel)
             Button(
-                onClick = onAddToCartClick,
+                onClick = {
+                    AddItemToCart(
+                        productId = product.id.toString(),
+                        context = context
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(36.dp),

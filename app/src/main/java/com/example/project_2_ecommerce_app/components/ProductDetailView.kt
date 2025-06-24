@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
+import com.example.project_2_ecommerce_app.AddItemToCart
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
@@ -33,11 +35,13 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun ProductDetailScreen(
+
     product: OwnProducts,
     onBackClick: () -> Unit = {},
-    onAddToCart: () -> Unit = {},
+//    onAddToCart: () -> Unit = {},
     onBuyNow: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     var liked by remember { mutableStateOf(false) }
     var selectedImageUrl by remember { mutableStateOf<String?>(null) }
 
@@ -69,13 +73,21 @@ fun ProductDetailScreen(
                     .padding(12.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
+
                 Button(
-                    onClick = onAddToCart,
+                    onClick = {
+                            AddItemToCart(
+                                productId = product.id.toString(),
+                                context = context
+                            )
+
+                    },
                     modifier = Modifier.weight(1f).height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
                 ) {
                     Text("Add to Cart", fontSize = 14.sp)
                 }
+
 
                 Spacer(modifier = Modifier.width(12.dp))
 
