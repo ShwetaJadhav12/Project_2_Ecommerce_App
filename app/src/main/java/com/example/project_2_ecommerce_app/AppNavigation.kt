@@ -95,7 +95,6 @@ fun AppNavigation(
     }
 }
 object globNavigation {
-
     @SuppressLint("StaticFieldLeak")
     lateinit var navController: NavHostController
 }
