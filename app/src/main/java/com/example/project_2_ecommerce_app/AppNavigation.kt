@@ -17,6 +17,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.project_2_ecommerce_app.PAGES.CategoryProduct
 import com.example.project_2_ecommerce_app.components.ProductDetailScreen
 import com.example.project_2_ecommerce_app.model.OwnProducts
+import com.example.project_2_ecommerce_app.pages.ProfilePage
+import com.example.project_2_ecommerce_app.pages.ProfilePage
+
 import com.example.project_2_ecommerce_app.screen.AuthScreen
 import com.example.project_2_ecommerce_app.screen.HomeScreen
 import com.example.project_2_ecommerce_app.screen.LoginScreen
@@ -89,6 +92,10 @@ fun AppNavigation(
                 }
             }
         }
+        composable("profile") {
+            ProfilePage(modifier)
+        }
+
 
 
 
