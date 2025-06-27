@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.project_2_ecommerce_app.components.BannerView
 import com.example.project_2_ecommerce_app.components.CategoryView
 import com.example.project_2_ecommerce_app.components.HeaderView
+import com.example.project_2_ecommerce_app.components.MostSellerView
 
 
 @Composable
@@ -42,6 +43,15 @@ fun HomePage(modifier: Modifier = Modifier){
             fontStyle = FontStyle.Normal
         ))
         CategoryView()
+        Text(
+            text = "Most Seller",
+            modifier = Modifier.padding(top = 16.dp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        MostSellerView()
+
 
 
     }

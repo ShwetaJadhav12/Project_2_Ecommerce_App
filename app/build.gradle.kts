@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
     implementation(libs.accompanist.pager.indicators)
+    implementation(libs.google.services)
 
 
 }
