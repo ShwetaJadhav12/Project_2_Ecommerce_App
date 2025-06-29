@@ -55,6 +55,7 @@ fun CategoryView(modifier: Modifier = Modifier){
     LazyRow() {
         items(categoryList.size) { index ->
             CategoryItem(category = categoryList[index])
+
         }
 
     }

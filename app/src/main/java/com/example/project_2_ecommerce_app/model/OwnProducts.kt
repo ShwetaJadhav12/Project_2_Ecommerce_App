@@ -7,6 +7,6 @@ data class OwnProducts(
     val brand: String? = null,
     val category: String? = null,
     val description: String? = null,
-    val id: String? = null,
+    var id: String? = null,
     val image: List<String>? = null
 )

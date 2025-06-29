@@ -1,4 +1,4 @@
-package com.example.project_2_ecommerce_app.pages
+package com.example.project_2_ecommerce_app.PAGES
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

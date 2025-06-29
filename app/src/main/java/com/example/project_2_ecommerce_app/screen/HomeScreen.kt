@@ -16,7 +16,7 @@ import androidx.navigation.NavController
 import com.example.project_2_ecommerce_app.PAGES.CartPage
 import com.example.project_2_ecommerce_app.PAGES.FavoritePage
 import com.example.project_2_ecommerce_app.PAGES.HomePage
-import com.example.project_2_ecommerce_app.pages.ProfilePage
+import com.example.project_2_ecommerce_app.PAGES.ProfilePage
 
 @Composable
 fun HomeScreen(navController: NavController) {

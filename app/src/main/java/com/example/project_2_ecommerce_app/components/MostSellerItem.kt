@@ -2,10 +2,7 @@ package com.example.project_2_ecommerce_app.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,13 +12,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.project_2_ecommerce_app.model.OwnProducts
+import androidx.compose.foundation.clickable
 
 @Composable
-fun MostSellerItem(product: OwnProducts) {
+fun MostSellerItem(
+    product: OwnProducts,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .width(160.dp),
+            .width(160.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)) // Light background

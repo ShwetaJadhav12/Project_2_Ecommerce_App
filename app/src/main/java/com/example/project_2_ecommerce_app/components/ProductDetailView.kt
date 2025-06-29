@@ -1,13 +1,10 @@
 package com.example.project_2_ecommerce_app.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.util.Log
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -22,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -30,15 +26,57 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.project_2_ecommerce_app.AddItemToCart
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.google.accompanist.pager.*
-import kotlinx.coroutines.launch
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
+@Composable
+fun ProductDetailScreenFromId(productId: String, onBackClick: () -> Unit) {
+    val db = Firebase.firestore
+    var product by remember { mutableStateOf<OwnProducts?>(null) }
+    var loading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(productId) {
+        Log.d("ProductDetail", "Loading product: $productId")
+        db.collection("data")
+            .document("products")
+            .collection("ownproducts")
+            .document(productId)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.d("ProductDetail", "Document exists: ${document.exists()}")
+                Log.d("ProductDetail", "Document data: ${document.data}")
+                if (document.exists()) {
+                    product = document.toObject(OwnProducts::class.java)
+                }
+                loading = false
+            }
+            .addOnFailureListener {
+                Log.e("ProductDetail", "Failed to load: $it")
+                loading = false
+            }
+    }
+
+
+    if (loading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else {
+        product?.let {
+            ProductDetailScreen(product = it, onBackClick = onBackClick)
+        } ?: run {
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Product not found", color = Color.Red)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(
-
     product: OwnProducts,
     onBackClick: () -> Unit = {},
-//    onAddToCart: () -> Unit = {},
     onBuyNow: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -48,7 +86,7 @@ fun ProductDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = product.title?.take(24) ?: "Product") },
+                title = { Text(product.title?.take(24) ?: "Product") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -73,21 +111,18 @@ fun ProductDetailScreen(
                     .padding(12.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-
                 Button(
                     onClick = {
-                            AddItemToCart(
-                                productId = product.id.toString(),
-                                context = context
-                            )
-
+                        AddItemToCart(
+                            productId = product.id.toString(),
+                            context = context
+                        )
                     },
                     modifier = Modifier.weight(1f).height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3F51B5))
                 ) {
                     Text("Add to Cart", fontSize = 14.sp)
                 }
-
 
                 Spacer(modifier = Modifier.width(12.dp))
 
@@ -119,8 +154,7 @@ fun ProductDetailScreen(
                     HorizontalPager(
                         count = product.image.size,
                         state = pagerState,
-                        modifier = Modifier
-                            .fillMaxSize()
+                        modifier = Modifier.fillMaxSize()
                     ) { page ->
                         Image(
                             painter = rememberAsyncImagePainter(product.image[page]),
@@ -148,7 +182,6 @@ fun ProductDetailScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Title
             Text(
                 text = product.title ?: "Product Name",
                 fontSize = 18.sp,
@@ -156,7 +189,6 @@ fun ProductDetailScreen(
                 maxLines = 2
             )
 
-            // Brand
             if (!product.brand.isNullOrBlank()) {
                 Text(
                     text = product.brand,
@@ -171,7 +203,6 @@ fun ProductDetailScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Price
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = "₹${product.price ?: "--"}",
@@ -196,7 +227,6 @@ fun ProductDetailScreen(
             Divider()
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Description
             Text(
                 text = "Product Description",
                 fontSize = 15.sp,
@@ -212,7 +242,6 @@ fun ProductDetailScreen(
             )
         }
 
-        // Fullscreen Image Dialog
         if (selectedImageUrl != null) {
             Dialog(onDismissRequest = { selectedImageUrl = null }) {
                 Box(

@@ -30,14 +30,11 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
         Firebase.firestore.collection("data")
             .document("products")
             .collection("ownproducts")
-            .whereEqualTo("category",categoryId)
+            .whereEqualTo("category", categoryId)
             .get()
-
-            .addOnSuccessListener {
-                result ->
-                val products = result.documents.mapNotNull {
-                    doc ->
-                    doc.toObject(OwnProducts::class.java)
+            .addOnSuccessListener { result ->
+                val products = result.documents.mapNotNull { doc ->
+                    doc.toObject(OwnProducts::class.java)?.copy(id = doc.id)
                 }
                 productList = products
             }
@@ -45,6 +42,7 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
                 println("Error fetching products: ${it.message}")
             }
     }
+
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
