@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.project_2_ecommerce_a.AppNavigation
 import com.example.project_2_ecommerce_app.ui.theme.Project_2_Ecommerce_AppTheme
 
 class MainActivity : ComponentActivity() {

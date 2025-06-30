@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.project_2_ecommerce_app.globNavigation
+import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.model.Category
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
@@ -74,7 +74,7 @@ fun CategoryItem(
             .padding(6.dp)
             .width(120.dp)
             .height(124.dp).clickable {
-                globNavigation.navController.navigate("categoryProduct/${category.id}")
+                navController.navigate("categoryProduct/${category.id}")
 
             },
         shape = RoundedCornerShape(12.dp),

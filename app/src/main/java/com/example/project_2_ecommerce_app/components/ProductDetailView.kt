@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import coil.compose.rememberAsyncImagePainter
 import com.example.project_2_ecommerce_app.AddItemToCart
+import com.example.project_2_ecommerce_app.firebase.FavoritesManager
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.google.accompanist.pager.*
 import com.google.firebase.firestore.ktx.firestore
@@ -83,6 +85,13 @@ fun ProductDetailScreen(
     var liked by remember { mutableStateOf(false) }
     var selectedImageUrl by remember { mutableStateOf<String?>(null) }
 
+    LaunchedEffect(product.id) {
+        FavoritesManager.isFavorite(product.id ?: "") {
+            liked = it
+        }
+    }
+
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -93,13 +102,28 @@ fun ProductDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { liked = !liked }) {
+                    // inside your ProductDetailScreen()
+
+                    IconButton(onClick = {
+                        liked = !liked
+                        val pid = product.id?.trim() ?: return@IconButton
+
+                        if (liked) {
+                            FavoritesManager.addToFavorites(pid)
+                        } else {
+                            FavoritesManager.removeFromFavorites(pid)
+                        }
+                    })
+
+             {
                         Icon(
-                            imageVector = Icons.Outlined.FavoriteBorder,
-                            contentDescription = "Like",
+                            imageVector = if (liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                            contentDescription = if (liked) "Liked" else "Not Liked",
                             tint = if (liked) Color.Red else Color.Gray
                         )
                     }
+
+
                 }
             )
         },
@@ -278,3 +302,4 @@ fun ProductDetailScreen(
         }
     }
 }
+

@@ -13,8 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.PAGES.CartPage
-import com.example.project_2_ecommerce_app.PAGES.FavoritePage
+import com.example.project_2_ecommerce_app.PAGES.FavoriteProductsScreen
 import com.example.project_2_ecommerce_app.PAGES.HomePage
 import com.example.project_2_ecommerce_app.PAGES.ProfilePage
 
@@ -67,7 +68,11 @@ fun ContentScreen(modifier: Modifier = Modifier,selectedIndex: Int){
     when(selectedIndex)
     {
         0 -> HomePage(modifier)
-        1 -> FavoritePage(modifier)
+        1 -> FavoriteProductsScreen(
+            onProductClick = { productId ->
+                navController.navigate("productDetail/$productId")
+            }, modifier = modifier
+        )
         2 -> CartPage(modifier)
         3 -> ProfilePage(modifier)
     }

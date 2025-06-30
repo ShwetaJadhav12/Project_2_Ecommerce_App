@@ -1,5 +1,4 @@
-package com.example.project_2_ecommerce_app
-
+package com.example.project_2_ecommerce_a
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.project_2_ecommerce_app.PAGES.CategoryProduct
+import com.example.project_2_ecommerce_app.PAGES.FavoriteProductsScreen
 import com.example.project_2_ecommerce_app.components.ProductDetailScreenFromId
 import com.example.project_2_ecommerce_app.PAGES.ProfilePage
 import com.example.project_2_ecommerce_app.screen.AuthScreen
@@ -22,7 +22,7 @@ fun AppNavigation(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
-    globNavigation.navController = navController
+    GlobNavigation.navController = navController
     val isLoggedIn = Firebase.auth.currentUser != null
     val firstPage = if (isLoggedIn) "home" else "auth"
 
@@ -56,10 +56,19 @@ fun AppNavigation(
         composable("profile") {
             ProfilePage(modifier)
         }
+        composable("favorites") {
+            FavoriteProductsScreen(
+                onProductClick = { productId ->
+                    navController.navigate("productDetail/$productId")
+                }, modifier = modifier
+            )
+        }
+
+
     }
 }
 
-object globNavigation {
+object GlobNavigation {
     @SuppressLint("StaticFieldLeak")
     lateinit var navController: NavHostController
 }

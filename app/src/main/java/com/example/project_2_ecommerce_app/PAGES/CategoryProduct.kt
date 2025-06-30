@@ -14,8 +14,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.components.ProductItemView
-import com.example.project_2_ecommerce_app.globNavigation.navController
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore

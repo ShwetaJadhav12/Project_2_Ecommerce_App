@@ -14,7 +14,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.project_2_ecommerce_app.globNavigation.navController
+import com.example.project_2_ecommerce_a.GlobNavigation.navController
+
 import com.example.project_2_ecommerce_app.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
