@@ -2,6 +2,7 @@ package com.example.project_2_ecommerce_app.PAGES
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.model.CartItem
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -52,7 +54,7 @@ fun CartPage(modifier: Modifier = Modifier) {
                     CartItem(
                         productId = id,
                         title = data["title"].toString(),
-                        price = data["price"].toString(),
+                        price = data["actualprice"].toString(),
                         image = data["image"] as? List<String> ?: emptyList(),
                         quantity = quantity
                     )
@@ -101,7 +103,9 @@ fun CartPage(modifier: Modifier = Modifier) {
         }
 
         Button(
-            onClick = { Toast.makeText(context, "Checkout not implemented", Toast.LENGTH_SHORT).show() },
+            onClick = {
+                navController.navigate("checkout")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -147,18 +151,40 @@ fun CartItemView(
                 Text("₹${item.price}", fontSize = 14.sp, color = Color(0xFF2E7D32))
                 Spacer(modifier = Modifier.height(6.dp))
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedButton(onClick = { onQuantityChange(-1) }, modifier = Modifier.size(32.dp)) {
-                        Text("-", fontSize = 18.sp,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(8.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = { onQuantityChange(-1) },
+                        modifier = Modifier.size(40.dp),
+                        shape = RoundedCornerShape(50),
+                        border = BorderStroke(1.dp, Color.Black),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Black)
+                    ) {
+                        Text("-", fontSize = 24.sp)
                     }
-                    Text("${item.quantity}", modifier = Modifier.padding(horizontal = 12.dp))
-                    OutlinedButton(onClick = { onQuantityChange(1) }, modifier = Modifier.size(32.dp)) {
-                        Text("+", fontSize = 18.sp,style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Black)
+
+                    Text(
+                        text = "${item.quantity}",
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.Black
+                    )
+
+                    OutlinedButton(
+                        onClick = { onQuantityChange(1) },
+                        modifier = Modifier.size(40.dp),
+                        shape = RoundedCornerShape(50),
+                        border = BorderStroke(1.dp, Color.Black),
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Black)
+                    ) {
+                        Text("+", fontSize = 20.sp)
                     }
                 }
+
             }
 
             IconButton(onClick = onRemove) {

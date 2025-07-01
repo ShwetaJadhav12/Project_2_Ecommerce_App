@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +29,10 @@ fun HomeScreen(navController: NavController) {
         NavItem("Profile", Icons.Default.Person)
     )
 
-    var selectedIndex by remember { mutableStateOf(0) }
+//    it will remember the last selected index
+//    means on which page we wre at the last
+//    so that when we clicked on back it will go to the last page we visited not the home page
+    var selectedIndex by rememberSaveable  { mutableStateOf(0) }
 
     Scaffold(
         containerColor = Color(0xFFE5E2E2),
