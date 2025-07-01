@@ -229,7 +229,7 @@ fun ProductDetailScreen(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "₹${product.price ?: "--"}",
+                    text = "₹${product.actualprice ?: "--"}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF2E7D32)
@@ -239,7 +239,7 @@ fun ProductDetailScreen(
                     product.actualprice != product.price
                 ) {
                     Text(
-                        text = "₹${product.actualprice}",
+                        text = "₹${product.price}",
                         fontSize = 14.sp,
                         color = Color.Gray,
                         textDecoration = TextDecoration.LineThrough
