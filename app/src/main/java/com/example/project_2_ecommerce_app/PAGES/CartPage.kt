@@ -4,12 +4,9 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -21,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -49,12 +47,13 @@ fun CartPage(modifier: Modifier = Modifier) {
             productsRef.get().addOnSuccessListener { result ->
                 val items = result.documents.mapNotNull { doc ->
                     val data = doc.data ?: return@mapNotNull null
-                    val id = doc.id
+                    val id = doc.id.trim()
                     val quantity = cartMap[id]?.toInt() ?: return@mapNotNull null
                     CartItem(
                         productId = id,
                         title = data["title"].toString(),
-                        price = data["actualprice"].toString(),
+                        price = data["price"].toString(), // MRP
+                        actualprice = data["actualprice"].toString(), // Final price
                         image = data["image"] as? List<String> ?: emptyList(),
                         quantity = quantity
                     )
@@ -73,23 +72,26 @@ fun CartPage(modifier: Modifier = Modifier) {
 
         LazyColumn(modifier = Modifier.weight(1f)) {
             items(cartItems) { item ->
-                CartItemView(item, onQuantityChange = { delta ->
-                    val newQty = (item.quantity + delta).coerceAtLeast(1)
-                    updateCartQuantity(item.productId, newQty, context)
-                    cartItems = cartItems.map {
-                        if (it.productId == item.productId) it.copy(quantity = newQty) else it
+                CartItemView(item,
+                    onQuantityChange = { delta ->
+                        val newQty = (item.quantity + delta).coerceAtLeast(1)
+                        updateCartQuantity(item.productId, newQty, context)
+                        cartItems = cartItems.map {
+                            if (it.productId == item.productId) it.copy(quantity = newQty) else it
+                        }
+                    },
+                    onRemove = {
+                        removeItemFromCart(item.productId, context)
+                        cartItems = cartItems.filter { it.productId != item.productId }
                     }
-                }, onRemove = {
-                    removeItemFromCart(item.productId, context)
-                    cartItems = cartItems.filter { it.productId != item.productId }
-                })
+                )
             }
         }
 
         Divider(modifier = Modifier.padding(vertical = 8.dp))
 
         val total = cartItems.sumOf {
-            (it.price.toIntOrNull() ?: 0) * it.quantity
+            (it.actualprice.toIntOrNull() ?: 0) * it.quantity
         }
 
         Row(
@@ -146,9 +148,24 @@ fun CartItemView(
             Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(item.title, fontSize = 16.sp, maxLines = 2)
+                Text(item.title, fontSize = 16.sp, maxLines = 2, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text("₹${item.price}", fontSize = 14.sp, color = Color(0xFF2E7D32))
+
+                Text(
+                    text = "MRP: ₹${item.price}",
+                    fontSize = 14.sp,
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        textDecoration = TextDecoration.LineThrough
+                    )
+                )
+                Text(
+                    text = "Price: ₹${item.actualprice}",
+                    fontSize = 16.sp,
+                    color = Color(0xFF2E7D32),
+                    fontWeight = FontWeight.Bold
+                )
+
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Row(
@@ -184,7 +201,6 @@ fun CartItemView(
                         Text("+", fontSize = 20.sp)
                     }
                 }
-
             }
 
             IconButton(onClick = onRemove) {
@@ -193,6 +209,7 @@ fun CartItemView(
         }
     }
 }
+
 fun updateCartQuantity(productId: String, qty: Int, context: Context) {
     val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
     Firebase.firestore.collection("users")
