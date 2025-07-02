@@ -33,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.model.OwnProducts
@@ -112,13 +113,22 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Checkout") },
+            androidx.compose.material.TopAppBar(
+                title = {
+                    Text(
+                        "Checkout",
+                        color = Color.White
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack, contentDescription = "Back",
+                            tint = Color.White
+                        )
                     }
-                }
+                },
+                backgroundColor = Color(0xFF3F51B5),
             )
         }
     ) {
@@ -168,7 +178,7 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
                 elevation = ButtonDefaults.elevatedButtonElevation(10.dp),
                 enabled = user.cartItems.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colors.primary,
+                    containerColor = Color(0xFF3F51B5),
                     contentColor = MaterialTheme.colors.onPrimary
                 )
             ) {
