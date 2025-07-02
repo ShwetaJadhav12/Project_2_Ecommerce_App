@@ -26,34 +26,36 @@ fun MostSellerItem(
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)) // Light background
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9))
     ) {
         Column(
-            modifier = Modifier
-                .padding(12.dp),
+            modifier = Modifier.padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AsyncImage(
                 model = product.image?.firstOrNull(),
                 contentDescription = product.title ?: "Product Image",
                 modifier = Modifier
-                    .height(120.dp)
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
+                    .height(100.dp)
+                    .fillMaxWidth(),
+                contentScale = androidx.compose.ui.layout.ContentScale.Fit // ⬅️ Crops image to fit
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = product.title ?: "No Title",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black,
-                maxLines = 2
+                maxLines = 1, // ⬅️ Only 1 line
+                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "₹${product.price ?: "0"}",
+                text = "₹${product.actualprice ?: "0"}",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF490549)

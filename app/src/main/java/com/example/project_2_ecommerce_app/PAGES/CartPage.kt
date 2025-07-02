@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -127,84 +128,100 @@ fun CartItemView(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+            .padding(vertical = 8.dp, horizontal = 12.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(6.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFDFD))
     ) {
         Row(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(14.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = rememberAsyncImagePainter(item.image.firstOrNull()),
-                contentDescription = null,
+                contentDescription = "Product Image",
                 modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
-                Text(item.title, fontSize = 16.sp, maxLines = 2, fontWeight = FontWeight.SemiBold)
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = item.title,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    maxLines = 2,
+                    color = Color(0xFF1F2937)
+                )
+
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = "MRP: ₹${item.price}",
-                    fontSize = 14.sp,
                     color = Color.Gray,
                     style = MaterialTheme.typography.bodySmall.copy(
                         textDecoration = TextDecoration.LineThrough
                     )
                 )
+
                 Text(
                     text = "Price: ₹${item.actualprice}",
-                    fontSize = 16.sp,
                     color = Color(0xFF2E7D32),
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
                 )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(8.dp)
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
                         onClick = { onQuantityChange(-1) },
-                        modifier = Modifier.size(40.dp),
+                        modifier = Modifier.size(36.dp),
                         shape = RoundedCornerShape(50),
                         border = BorderStroke(1.dp, Color.Black),
                         contentPadding = PaddingValues(0.dp),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Black)
                     ) {
-                        Text("-", fontSize = 24.sp)
+                        Text("-", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     }
 
                     Text(
-                        text = "${item.quantity}",
+                        text = item.quantity.toString(),
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.Black
+                        style = MaterialTheme.typography.titleMedium
                     )
 
                     OutlinedButton(
                         onClick = { onQuantityChange(1) },
-                        modifier = Modifier.size(40.dp),
+                        modifier = Modifier.size(36.dp),
                         shape = RoundedCornerShape(50),
                         border = BorderStroke(1.dp, Color.Black),
                         contentPadding = PaddingValues(0.dp),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Black)
                     ) {
-                        Text("+", fontSize = 20.sp)
+                        Text("+", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             }
 
-            IconButton(onClick = onRemove) {
-                Icon(Icons.Default.Delete, contentDescription = "Remove")
+            Spacer(modifier = Modifier.width(8.dp))
+
+            IconButton(
+                onClick = onRemove,
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Remove Item",
+                    tint = Color.Red
+                )
             }
         }
     }

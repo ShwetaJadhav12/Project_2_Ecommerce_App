@@ -35,7 +35,6 @@ import com.google.firebase.firestore.firestore
 @Composable
 fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
 
-
     var productList by remember { mutableStateOf<List<OwnProducts>>(emptyList()) }
 
     LaunchedEffect(Unit) {
@@ -58,16 +57,26 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
     BackHandler {
         navController.popBackStack() // Go back to previous screen
     }
+
+    // Capitalize first letter for better UI
+    val categoryTitle = categoryId.replaceFirstChar { it.uppercase() }
+
     androidx.compose.material.Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Checkout",
-                    color = Color.White) },
+                title = {
+                    Text(
+                        text = categoryTitle,
+                        color = Color.White
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back",
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back",
                             tint = Color.White
-                            )
+                        )
                     }
                 },
                 backgroundColor = Color(0xFF3F51B5),
@@ -92,7 +101,5 @@ fun CategoryProduct(modifier: Modifier = Modifier, categoryId: String) {
                 )
             }
         }
-
     }
-
 }

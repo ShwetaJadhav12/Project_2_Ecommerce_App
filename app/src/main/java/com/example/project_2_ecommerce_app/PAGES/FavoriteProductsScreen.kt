@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.example.project_2_ecommerce_app.firebase.FavoritesManager
@@ -47,44 +49,64 @@ fun ProductCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 12.dp, vertical = 6.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        shape = RoundedCornerShape(14.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFDFD))
     ) {
-        Row(modifier = Modifier.padding(12.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(14.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
                 painter = rememberAsyncImagePainter(product.image?.firstOrNull()),
-                contentDescription = "Product Image",
+                contentDescription = product.title ?: "Product Image",
                 modifier = Modifier
-                    .size(100.dp)
-                    .clip(RoundedCornerShape(10.dp)),
-                contentScale = ContentScale.Crop
+                    .size(90.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Fit
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(14.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp)
+            ) {
                 Text(
-                    text = product.title ?: "Product",
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 2
+                    text = product.title ?: "Product Title",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    maxLines = 2,
+                    color = Color(0xFF1F2937)
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
-                Text(
-                    text = "₹${product.price ?: "--"}",
-                    color = Color(0xFF2E7D32),
-                    style = MaterialTheme.typography.titleSmall
-                )
-
-                if (!product.actualprice.isNullOrBlank() && product.actualprice != product.price) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "₹${product.actualprice}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        text = "₹${product.price ?: "--"}",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            color = Color(0xFF2E7D32),
+                            fontWeight = FontWeight.Bold
+                        )
                     )
+
+                    if (!product.actualprice.isNullOrBlank() && product.actualprice != product.price) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "₹${product.actualprice}",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Color.Gray,
+                                textDecoration = TextDecoration.LineThrough
+                            )
+                        )
+                    }
                 }
             }
 
@@ -101,13 +123,14 @@ fun ProductCard(
                     Icon(
                         imageVector = if (liked) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
                         contentDescription = "Like",
-                        tint = if (liked) Color.Red else Color.Gray
+                        tint = if (liked) Color(0xFFE91E63) else Color.Gray
                     )
                 }
             }
         }
     }
 }
+
 
 
 @Composable
