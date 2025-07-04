@@ -1,6 +1,7 @@
 package com.example.project_2_ecommerce_app.PAGES
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.SnackbarDefaults.backgroundColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -24,7 +24,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,13 +33,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.project_2_ecommerce_a.GlobNavigation.navController
 import com.example.project_2_ecommerce_app.model.OwnProducts
 import com.example.project_2_ecommerce_app.model.User
+import com.example.project_2_ecommerce_app.startPayment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("MutableCollectionMutableState", "UnusedMaterialScaffoldPaddingParameter")
@@ -54,6 +56,9 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
 
     val subTotal = remember { mutableStateOf(0.0) }
     val totalAmount = remember { mutableStateOf(0.0) }
+    val context = LocalContext.current
+    val activity = context as? Activity
+
 
     fun calculateSubTotal() {
         subTotal.value = 0.0
@@ -71,7 +76,7 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
         deliveryCharges.value = 0.0               // No delivery cost
 
         totalAmount.value =
-            (subTotal.value - discount.value) + tax.value + deliveryCharges.value
+            ((subTotal.value - discount.value) + tax.value + deliveryCharges.value)
     }
 
 
@@ -164,13 +169,23 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
                             value = totalAmount.value,
                             isBold = true
                         )
+
+//                        PriceRow(label = "Amount in Paise",
+//                            value = (totalAmount.value * 100).roundToInt().toDouble(),
+//                            isBold = true)
+
                     }
                 }
             }
 
-            // Place Order Button
             Button(
-                onClick = { /* TODO: Handle order */ },
+                onClick = {
+                    activity?.let {
+                        startPayment(totalAmount.value, it)
+                    }
+                },
+
+
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp),
@@ -192,6 +207,7 @@ fun CheckOutPage(modifier: Modifier = Modifier) {
 }
 @Composable
 fun PriceRow(label: String, value: Double, isBold: Boolean = false) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -204,7 +220,7 @@ fun PriceRow(label: String, value: Double, isBold: Boolean = false) {
         )
         Text(
             text = "₹%.2f".format(value),
-            style = if (isBold) MaterialTheme.typography.h4 else MaterialTheme.typography.h6
+            style = if (isBold) MaterialTheme.typography.h5 else MaterialTheme.typography.subtitle2
         )
     }
 }

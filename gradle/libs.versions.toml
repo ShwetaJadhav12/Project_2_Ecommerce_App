@@ -1,6 +1,7 @@
 [versions]
 accompanistPagerIndicators = "0.34.0"
 agp = "8.7.1"
+checkout = "1.6.20"
 coilCompose = "2.6.0"
 googleServices = "4.4.3"
 kotlin = "2.0.0"
@@ -22,6 +23,7 @@ foundationAndroid = "1.7.2"
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+checkout = { module = "com.razorpay:checkout", version.ref = "checkout" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

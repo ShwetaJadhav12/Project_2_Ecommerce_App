@@ -64,6 +64,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.google.services)
+    implementation(libs.checkout)
+
 
 
 }

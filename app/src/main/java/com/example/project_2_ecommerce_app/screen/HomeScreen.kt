@@ -29,42 +29,58 @@ fun HomeScreen(navController: NavController) {
         NavItem("Profile", Icons.Default.Person)
     )
 
-//    it will remember the last selected index
-//    means on which page we wre at the last
-//    so that when we clicked on back it will go to the last page we visited not the home page
-    var selectedIndex by rememberSaveable  { mutableStateOf(0) }
+    var selectedIndex by rememberSaveable { mutableStateOf(0) }
 
     Scaffold(
-        containerColor = Color(0xFFE5E2E2),
+        containerColor = Color(0xFFF8F9FA), // Light gray background
+
         bottomBar = {
-            NavigationBar(
-                containerColor = Color.White,
-                tonalElevation = 10.dp
+            // Wrap NavigationBar in a Box to control height
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(95.dp) // ↓ Change this to desired height
             ) {
-                navItems.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = selectedIndex == index,
-                        onClick = {
-                            selectedIndex = index
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = item.label
-                            )
-                        },
-                        label = {
-                            Text(text = item.label)
-                        }
-                    )
+                NavigationBar(
+                    modifier = Modifier.fillMaxSize(), // Fill the Box
+                    containerColor = Color(0xFF3B458A), // Dark blue
+                    tonalElevation = 8.dp
+                ) {
+                    navItems.forEachIndexed { index, item ->
+                        val isSelected = selectedIndex == index
+
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = { selectedIndex = index },
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = item.label,
+                                    tint = if (isSelected) Color(0xFF0D1333) else Color.White
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = item.label,
+                                    color = if (isSelected) Color(0xFFFFF8E1) else Color.White
+                                )
+                            },
+                            alwaysShowLabel = true
+                        )
+                    }
                 }
             }
         }
-    ){ innerPadding ->
-            ContentScreen(modifier = Modifier.padding(innerPadding),selectedIndex)
-        }
-
+    )
+    { innerPadding ->
+        ContentScreen(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                ,
+            selectedIndex = selectedIndex
+        )
     }
+}
 
 
 @Composable
