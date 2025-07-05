@@ -1,4 +1,4 @@
-# 🛒 E-Commerce Android App (Jetpack Compose + Firebase + Razorpay)
+# EasyShop(E-Commerce Android App)
 A complete, modern, and full-stack **E-Commerce Android application** built using **Jetpack Compose**, **Firebase**, and **Razorpay**.
 Built with clean architecture, reusable components, and real-time sync
 
@@ -24,16 +24,13 @@ Built with clean architecture, reusable components, and real-time sync
 - Optional "Favorites" screen
 
 ### 💳 Razorpay Payment Integration
-- "Buy Now" and full cart checkout supported
+- "full cart checkout supported
 - Razorpay test mode SDK integrated
-- Post-payment success hook to save orders
 
 ### 🧾 Order Summary Page
 - Lists cart items with name & price
 - Total price and "Pay Now" button
 - Smooth UI built with Jetpack Compose
-
----
 
 ## 🧑‍💻 Tech Stack
 
